@@ -10,6 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 chrome_options = Options()
 chrome_options.add_argument("--headless")
+chrome_options.add_argument("--window-size=1920,1080")
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--no-sandbox')
 
@@ -17,15 +18,16 @@ chrome_options.add_argument('--no-sandbox')
 class OrderPageTest(unittest.TestCase):
 
     def setUp(self):
-        self.driver = webdriver.Chrome()  # standard chrome
-        # self.driver = webdriver.Chrome(options=chrome_options)  # headless chrome
-        self.driver.get('https://foodonya.com/php/order.php')
+        # self.driver_standard = webdriver.Chrome()  # standard chrome
+        self.driver_headless = webdriver.Chrome(options=chrome_options)  # headless chrome
+        # self.driver_standard.get('https://foodonya.com/php/order.php')
+        self.driver_headless.get('https://foodonya.com/php/order.php')
 
     def test_ifOrderPageOpens(self):
         # def name must start with test_ inorder to the test to detect
 
-        driv = self.driver
-        # converting self.driver to driv for easy typing
+        driv = self.driver_headless
+        # converting self.driver_standard to driv for easy typing
 
         # time.sleep(3)
 
@@ -34,8 +36,8 @@ class OrderPageTest(unittest.TestCase):
         # self.driver.maximize_window()
 
     def test_ifSelectBtnWorks(self):
-        driv = self.driver
-        # converting self.driver to driv for easy typing
+        driv = self.driver_headless
+        # converting self.driver_standard to driv for easy typing
 
         elem = driv.find_element_by_xpath('//*[@id="collapse-1"]/div/div/div[3]/div/form/button')
         elem.click()
@@ -44,4 +46,5 @@ class OrderPageTest(unittest.TestCase):
         # page_source checks the whole page including html tags for the text "Kotto Pollo"
 
     def tearDown(self):
-        self.driver.close()
+        # self.driver_standard.close()
+        self.driver_headless.close()

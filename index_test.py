@@ -1,4 +1,5 @@
 import unittest
+import time
 from selenium.webdriver.common.keys import Keys  # for sending special keys like arrow down
 
 from selenium.common.exceptions import NoSuchElementException
@@ -9,15 +10,18 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument("--window-size=1920,1080") # for disabling mobile states of hamburger menu, accordion
 
 
 class IndexTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.driver = webdriver.Chrome()  # standard chrome
-        # self.driver = webdriver.Chrome(options=chrome_options)  # headless chrome
+        # STANDARD CHROME
+        # self.driver = webdriver.Chrome()
+        # self.driver.get('https://foodonya.com')
+
+        # HEADLESS CHROME
+        self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.get('https://foodonya.com')
 
     def test_index_title(self):
@@ -25,8 +29,8 @@ class IndexTestCase(unittest.TestCase):
 
         # driv = self.driver
         # converting self.driver to driv for easy typing
-
         # driv.get('https://foodonya.com')
+
         self.assertIn("Foodonya", self.driver.title)
 
         # time.sleep(5)
@@ -70,6 +74,10 @@ class IndexTestCase(unittest.TestCase):
         self.assertIn("Conditions", driv.page_source)
 
     def test_index_search_chicken(self):
+        # THIS TEST WONT WORK IN HEADLESS CHROME, IF chrome_options.add_argument("--window-size=1920,1080") is
+        # not set for disabling smaller mobile device display states of hamburger menu, accordion
+        # In default headless chrome, the search bar may be inside the hamburger menu, so it cant be detected.
+
         driv = self.driver
         # converting self.driver to driv for easy typing
 
@@ -84,12 +92,17 @@ class IndexTestCase(unittest.TestCase):
 
         lists = driv.find_elements_by_class_name('card')  # elements- not element. this returns a list of items
 
-        print('list length: ', len(lists))
+        # print('list length: ', len(lists))
         self.assertEqual(9, len(lists)) # does the list has 9 cards?
 
+        time.sleep(2)
+
     def test_index_search_cok(self):
+        # THIS TEST WONT WORK IN HEADLESS CHROME, IF chrome_options.add_argument("--window-size=1920,1080") is
+        # not set for disabling smaller mobile device display states of hamburger menu, accordion
+        # In default headless chrome, the search bar may be inside the hamburger menu, so it cant be detected.
+
         driv = self.driver
-        # converting self.driver to driv for easy typing
 
         # get search box html element
         elem = driv.find_element_by_id('search')
@@ -104,8 +117,13 @@ class IndexTestCase(unittest.TestCase):
         # print('list length: ', len(lists))
         # self.assertEqual(0, len(lists)) # does the list has 0 cards? This works but better way of doing this is below
 
+        # time.sleep(2)
+
         with self.assertRaises(NoSuchElementException):
             driv.find_element_by_class_name('card')  # does it raises NoSuch'card'ElementException for searching 'cok'?
+
+        # This is the best way to check. Above test may raise a false positive.
+        self.assertIn("Sorry, no item", driv.page_source)
 
     def tearDown(self):
         self.driver.close()
@@ -115,8 +133,11 @@ class IndexTestCase(unittest.TestCase):
 # This is a test suite.
 # Only these search tests will run if this index_test.py file is run from the command prompt
 # That's because, when this file is called from the command prompt as
-#  C:\Users\000930322\Downloads\Web development\Foodonya Python Selenium Tests>python index_test.py, the main() method
-#  will run. In this file there is no main method, instead the suite() method will be run by the runner.
+#
+#  C:\Users\000930322\Downloads\Web development\Foodonya Python Selenium Tests>python index_test.py
+#
+#  the main() method will run. In this file there is no main method,
+#  so instead the suite() method will be run by the runner.
 
 # In future, create separate .py file that only contains a particular test suite logic. For example, to test
 #  the membership functionalities alone, create a test suite that contains signup, login and member-details-update
