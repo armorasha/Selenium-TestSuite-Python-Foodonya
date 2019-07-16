@@ -10,34 +10,35 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 chrome_options = Options()
 chrome_options.add_argument("--headless")
-chrome_options.add_argument('--disable-gpu')
-chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument("--window-size=1920,1080") # for disabling mobile states of hamburger menu, accordion
 
 
 class SelectTestCase(unittest.TestCase):
 
     def setUp(self):
-        # self.driver_standard = webdriver.Chrome()  # standard chrome
-        self.driver_headless = webdriver.Chrome(options=chrome_options)  # headless chrome
-        # self.driver_standard.get('https://foodonya.com/php/order.php')
-        self.driver_headless.get('https://foodonya.com/php/order.php')
+        # STANDARD CHROME
+        # self.driver = webdriver.Chrome()
+        # self.driver.get('https://foodonya.com/php/order.php')
+
+        # HEADLESS CHROME
+        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver.get('https://foodonya.com/php/order.php')
 
     def test_NoDirectAccessToSelectPage(self):
         # def name must start with test_ inorder to the test to detect
-        driv1 = self.driver_headless
+        driv1 = self.driver
 
         driv1.get('https://foodonya.com/php/select_page.php')
-        time.sleep(2)
 
         self.assertNotIn("Add to Cart", driv1.page_source)
 
     def test_ifAddToCartBtnWorks(self):
-        driv = self.driver_headless
+        driv = self.driver
         # converting self.driver to driv for easy typing
 
         select = driv.find_element_by_xpath('//*[@id="collapse-1"]/div/div/div[3]/div/form/button')
         select.click()
-        # Selects Kotto Pollo and goes to select page
+        # Selects Kotto Pollo from order page and goes to select page
 
         add_qty = driv.find_element_by_xpath('/html/body/form/div/div/button[2]')
         add_qty.click()
@@ -59,6 +60,6 @@ class SelectTestCase(unittest.TestCase):
         # checking to see if Kotto Pollo has been added in view_cart page by checking the tag <td> has 'Kotto Pollo'.
 
     def tearDown(self):
-        # self.driver_standard.close()
-        self.driver_headless.close()
+        # time.sleep(2)
+        self.driver.close()
 
