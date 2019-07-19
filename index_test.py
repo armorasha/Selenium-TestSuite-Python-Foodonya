@@ -128,6 +128,15 @@ class IndexTestCase(unittest.TestCase):
     def tearDown(self):
         self.driver.close()
 
+# TEST SUITE
+# SEE: signup_login_test_suite.py for test suite example
+# Created separate signup_login_test_suite.py file that only contains a particular test suite logic.
+# For example, to test the membership functionalities alone, created a test suite that contains signup, login
+#  and member-details-update tests alone. Run that test suite file to test only those functionalitites.
+#
+# Alternatively, you can create a directory containing those testcase files and run the whole directory. This method is
+#  not very efficient but will do the job in simple cases.
+
 
 # WORKS code.
 # This is a test suite.
@@ -139,12 +148,7 @@ class IndexTestCase(unittest.TestCase):
 #  the main() method will run. In this file there is no main method,
 #  so instead the suite() method will be run by the runner.
 
-# In future, create separate .py file that only contains a particular test suite logic. For example, to test
-#  the membership functionalities alone, create a test suite that contains signup, login and member-details-update
-#  tests alone. Run that test suite file to test only those functionalitites.
-#
-# Alternatively, you can create a directory containing those testcase files and run the whole directory. This method is
-#  not very efficient but will do the job in simple cases.
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(IndexTestCase('test_index_search_chicken')) # running only selected tests
