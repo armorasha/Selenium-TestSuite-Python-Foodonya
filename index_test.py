@@ -147,7 +147,7 @@ class IndexTestCase(unittest.TestCase):
 #  not very efficient but will do the job in simple cases.
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(IndexTestCase('test_index_search_chicken'))
+    suite.addTest(IndexTestCase('test_index_search_chicken')) # running only selected tests
     suite.addTest(IndexTestCase('test_index_search_cok'))
     return suite
 

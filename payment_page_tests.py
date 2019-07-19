@@ -2,6 +2,8 @@ import unittest
 import time
 
 import mysql.connector
+# Community version of PyCharm doesnt have support for database handling.
+# Use Python IDLE if you want to use and test mysql databases.
 
 from selenium.webdriver.common.keys import Keys  # for sending special keys like arrow down
 
